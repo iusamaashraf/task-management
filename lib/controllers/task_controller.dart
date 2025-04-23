@@ -24,13 +24,12 @@ class TaskController extends GetxController {
   Future<void> fetchTasks() async {
     try {
       isLoading.value = true;
-      // Get today's date boundaries
+
       final now = DateTime.now();
       final startOfToday = DateTime(now.year, now.month, now.day);
       final endOfToday =
           DateTime(now.year, now.month, now.day, 23, 59, 59, 999);
 
-      // Fetch only tasks scheduled for today
       final QuerySnapshot snapshot = await _firestore
           .collection('tasks')
           .where('scheduledTime', isGreaterThanOrEqualTo: startOfToday)
@@ -41,11 +40,10 @@ class TaskController extends GetxController {
           .map((doc) => TaskModel.fromFirestore(doc as DocumentSnapshot))
           .toList();
 
-      // Sort tasks by scheduled time
       tasks.sort((a, b) => a.scheduledTime.compareTo(b.scheduledTime));
     } catch (e) {
       error.value = 'Failed to fetch tasks: $e';
-      debugPrint('Error fetching tasks: $e'); // Added debugPrint for debugging
+      debugPrint('Error fetching tasks: $e');
     } finally {
       isLoading.value = false;
     }
@@ -94,24 +92,20 @@ class TaskController extends GetxController {
   }
 
   void filterTasksByDate(DateTime date) {
-    // Create start and end of the selected date for proper filtering
     final startOfDay = DateTime(date.year, date.month, date.day);
     final endOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59, 999);
 
-    // Fetch all tasks first to ensure we have the complete list
     _firestore.collection('tasks').get().then((snapshot) {
       final allTasks = snapshot.docs
           .map((doc) => TaskModel.fromFirestore(doc as DocumentSnapshot))
           .toList();
 
-      // Filter tasks that fall within the selected date's boundaries
       tasks.value = allTasks.where((task) {
         return task.scheduledTime
                 .isAfter(startOfDay.subtract(Duration(seconds: 1))) &&
             task.scheduledTime.isBefore(endOfDay.add(Duration(seconds: 1)));
       }).toList();
 
-      // Sort tasks by scheduled time
       tasks.sort((a, b) => a.scheduledTime.compareTo(b.scheduledTime));
     });
   }
@@ -128,20 +122,16 @@ class TaskController extends GetxController {
 
       switch (response['action']) {
         case 'create':
-          // Properly reconstruct scheduledTime using selectedDate as base
           DateTime scheduledTime;
           if (response.containsKey('scheduledTime') &&
               response['scheduledTime'] is DateTime) {
-            // If absolute date is provided, use it directly
             scheduledTime = response['scheduledTime'] as DateTime;
           } else {
-            // Use selectedDate as the base date
             final baseDate = selectedDate.value;
 
             if (response['time'] is TimeOfDay) {
               final time = response['time'] as TimeOfDay;
 
-              // If a specific date is provided, use it with the selected time
               final date = response['date'] is DateTime
                   ? response['date'] as DateTime
                   : baseDate;
@@ -154,7 +144,6 @@ class TaskController extends GetxController {
                 time.minute,
               );
             } else {
-              // If no time is specified, use current time with the selected date
               final now = DateTime.now();
               scheduledTime = DateTime(
                 baseDate.year,
@@ -200,7 +189,6 @@ class TaskController extends GetxController {
               debugPrint('Found existing task: ${existingTask.title}');
               debugPrint('Update data: ${response.toString()}');
 
-              // Parse the date from the response, using selectedDate as base
               DateTime taskDate;
               if (response['date'] is DateTime) {
                 taskDate = response['date'] as DateTime;
@@ -208,7 +196,6 @@ class TaskController extends GetxController {
                 taskDate = selectedDate.value;
               }
 
-              // Parse the time from the response
               TimeOfDay taskTime;
               if (response['time'] is TimeOfDay) {
                 taskTime = response['time'] as TimeOfDay;
@@ -226,7 +213,6 @@ class TaskController extends GetxController {
                 );
               }
 
-              // Create scheduled time by combining date and time
               final scheduledTime = DateTime(
                 taskDate.year,
                 taskDate.month,
@@ -235,7 +221,6 @@ class TaskController extends GetxController {
                 taskTime.minute,
               );
 
-              // Create updated task with new values
               final updatedTask = existingTask.copyWith(
                 title: response['newTitle']?.toString() ?? existingTask.title,
                 description: response['description']?.toString() ??
@@ -291,11 +276,10 @@ class TaskController extends GetxController {
               );
             }
           }
-          // ... leave your existing delete logic here as is
+
           break;
       }
 
-      // Reset the selected time slot after processing the command
       selectedTimeSlot.value = null;
     } catch (e) {
       error.value = 'Failed to process voice command: $e';
