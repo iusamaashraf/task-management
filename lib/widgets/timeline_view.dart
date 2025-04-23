@@ -22,7 +22,7 @@ class TimelineView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       controller: scrollController,
-      itemCount: 24 * 2, // 24 hours * 2 (30-minute intervals)
+      itemCount: 24 * 2,
       itemBuilder: (context, index) {
         final hour = index ~/ 2;
         final minute = (index % 2) * 30;
