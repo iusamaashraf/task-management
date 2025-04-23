@@ -1,0 +1,2 @@
+/Users/m1/Downloads/ai_task 2/android/app/.cxx/Debug/4h4j6z5m/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/m1/Downloads/ai_task 2/android/app/.cxx/Debug/4h4j6z5m/armeabi-v7a/CMakeFiles/rebuild_cache.dir
