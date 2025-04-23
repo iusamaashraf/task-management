@@ -14,10 +14,17 @@ A Flutter application that allows users to manage tasks using voice commands, po
 
 ## Voice Command Examples
 
-- "Create a meeting with John tomorrow at 2 PM"
-- "Update the project deadline to next Friday"
-- "Delete all tasks for today"
-- "Mark the presentation task as completed"
+-- Create:
+ Create (title) compulsory 
+ (description+time ) optional.
+
+-- Update:
+Update(title)(time)(description).
+
+Ask Update then if you want to change the title then just ask new title or if you want to update description then use word description and same for time.
+
+-- Delete:
+ Delete (title)
 
 ## Technical Architecture
 

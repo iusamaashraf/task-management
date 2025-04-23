@@ -1,11 +1,11 @@
-import 'package:ai_task/constants/colors.dart';
+import 'package:ai_task/global/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:table_calendar/table_calendar.dart' as calendar;
-import '../controllers/task_controller.dart';
-import '../widgets/timeline_view.dart';
+import '../../controllers/task_controller.dart';
+import '../../../global/widgets/timeline_view.dart';
 import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {

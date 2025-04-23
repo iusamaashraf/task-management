@@ -1,9 +1,9 @@
-import 'package:ai_task/constants/colors.dart';
-import 'package:ai_task/widgets/time_slot_divisions.dart';
+import 'package:ai_task/global/constants/colors.dart';
+import 'package:ai_task/global/widgets/time_slot_divisions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../controllers/task_controller.dart';
+import '../../app/controllers/task_controller.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
 
